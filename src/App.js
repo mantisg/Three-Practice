@@ -5,6 +5,7 @@ import {OrbitControls, CurveModifier} from '@react-three/drei'
 
 function Sphere(props) {
   const ref = useRef()
+  useFrame((state, delta) => (ref.current.rotation.y += delta))
   useFrame((state, delta) => (ref.current.rotation.z += delta))
 
   return (
@@ -20,6 +21,7 @@ function Sphere(props) {
 
 function Octahedron(props) {
   const ref = useRef()
+  useFrame((state, delta) => (ref.current.rotation.y += delta))
   useFrame((state, delta) => (ref.current.rotation.z += delta))
 
   return (
@@ -35,7 +37,8 @@ function Octahedron(props) {
 
 function Cone(props) {
   const ref = useRef()
-  useFrame((state, delta) => (ref.current.rotation.x += delta))
+  useFrame((state, delta) => (ref.current.rotation.z += delta))
+  useFrame((state, delta) => (ref.current.rotation.y += delta))
 
   return (
     <mesh
@@ -51,6 +54,7 @@ function Cone(props) {
 function Box(props) {
   const ref = useRef()
   const [clicked, click] = useState(false)
+  useFrame((state, delta) => (ref.current.rotation.z += delta))
   useFrame((state, delta) => (ref.current.rotation.y += delta))
 
   return (
@@ -68,6 +72,7 @@ function Box(props) {
 
 function Tube(props) {
   const ref = useRef()
+  useFrame((state, delta) => (ref.current.rotation.z += delta))
   useFrame((state, delta) => (ref.current.rotation.y += delta))
   //const curve = CurveModifier(5)
 
@@ -78,6 +83,31 @@ function Tube(props) {
     >
       <tubeGeometry />
       <meshStandardMaterial color={'blue'} wireframe />
+    </mesh>
+  )
+}
+
+function Torus(props) {
+  const ref = useRef()
+  useFrame((state, delta) => (ref.current.rotation.z += delta))
+  useFrame((state, delta) => (ref.current.rotation.y += delta))
+
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+    >
+      <torusGeometry args={[1.5, 0.5, 20, 22]} />
+      <meshBasicMaterial color={'blue'} wireframe />
+    </mesh>
+  )
+}
+
+function Plane() {
+  return (
+    <mesh>
+      <planeGeometry args={[10, 10]} />
+      <meshBasicMaterial color={'black'} />
     </mesh>
   )
 }
@@ -95,6 +125,7 @@ function App() {
           <Sphere position={[-4,-3,-1]} />
           <Octahedron position={[3,-3,-1]} />
           <Tube position={[0, 2, -3]} />
+          <Torus position={[0, -3, -2]} />
           <OrbitControls />
       </Canvas>
     </div>
